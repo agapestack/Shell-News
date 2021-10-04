@@ -28,7 +28,9 @@ def getArticleFromFile(filePath, url, headers):
     for i in range(min(len(news), 20)):
         article = {}
         article['title'] = news[i].find("p", {"class": "article__title"})
-        print(str(i+1) + "/ " + article['title'].text)
+        # article['article_link'] =
+        # article['img_link'] =  
+        # print(str(i+1) + "/ " + article['title'].text)
 
     htmlFile.close()
 
