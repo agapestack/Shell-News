@@ -5,23 +5,24 @@ import json
 headers = {
     "User-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.80 Safari/537.36"}
 url = "https://www.france24.com/fr/"
-filePath = "./tmp/html/fr24.html"
+htmlFilePath = "./tmp/html/fr24.html"
+jsonFilePath = "./tmp/json/fr24.html"
 
 tmp_data = {}
 tmp_data['article'] = []
 
 
-def getHtmlFile(filePath, url, headers):
+def getHtmlFile(htmlFilePath, url, headers):
     res = requests.get(url, headers=headers)
-    file = open(filePath, "w+")
+    file = open(htmlFilePath, "w+")
     file.write(res.text)
     file.close()
 
 
-def getArticleFromFile(filePath, url, headers):
-    getHtmlFile(filePath, url, headers)
+def getArticleFromFile(htmlFilePath, jsonFilePath, url, headers):
+    getHtmlFile(htmlFilePath, url, headers)
 
-    htmlFile = open(filePath, "r")
+    htmlFile = open(htmlFilePath, "r")
     soup = BeautifulSoup(htmlFile, "html.parser")
     news = soup.find_all("div", {"class": "m-item-list-article"})
 
@@ -34,4 +35,8 @@ def getArticleFromFile(filePath, url, headers):
 
     htmlFile.close()
 
-getArticleFromFile(filePath, url, headers)
+    jsonFile = open(jsonFilePath, "w+")
+    json.dump(tmp_data, jsonFile)
+    jsonFile.close()
+
+getArticleFromFile(htmlFilePath, jsonFilePath, url, headers)
